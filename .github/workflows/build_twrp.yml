@@ -25,10 +25,10 @@ jobs:
           mkdir -p Toolchain
           cd Toolchain
           wget https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/a7bb6f39cd99b2fb26ecc2d3cb984d18cd259d24/aarch64-linux-android.tar.gz -O aarch64-linux-android.tar.gz
-          tar -xzf aarch64-linux-android.tar.gz
-          mv aarch64-linux-android aarch64-linux-android-4.9
+          mkdir -p aarch64-linux-android-4.9
+          tar -xzf aarch64-linux-android.tar.gz -C aarch64-linux-android-4.9
           cd ..
-
+          
       - name: Make build_kernel.sh executable
         run: chmod +x build_twrp/build_kernel.sh
 
