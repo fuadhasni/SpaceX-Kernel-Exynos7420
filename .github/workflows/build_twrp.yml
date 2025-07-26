@@ -20,13 +20,9 @@ jobs:
             build-essential ccache bc bison flex libssl-dev \
             libncurses5-dev lzop zip cpio fakeroot
 
-      - name: Download Android GCC 4.9 Toolchain
+      - name: Clone Android GCC 4.9 Toolchain
         run: |
-          mkdir -p Toolchain
-          cd Toolchain
-          wget https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/heads/master.tar.gz -O toolchain.tar.gz
-          tar -xzf toolchain.tar.gz
-          cd ..
+          git clone --depth=1 https://github.com/growtopiajaw/aarch64-linux-android-4.9.git Toolchain/aarch64-linux-android-4.9
 
       - name: Make build_kernel.sh executable
         run: chmod +x build_twrp/build_kernel.sh
