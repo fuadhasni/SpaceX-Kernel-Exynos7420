@@ -35,6 +35,9 @@ jobs:
             fi
           done
 
+      - name: Make build_kernel.sh executable
+        run: chmod +x build_twrp/build_kernel.sh
+
       - name: Build kernel and recovery
         run: |
           cd build_twrp
