@@ -18,25 +18,15 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y \
             build-essential ccache bc bison flex libssl-dev \
-            libncurses5-dev lzop zip cpio fakeroot gcc-aarch64-linux-gnu
+            libncurses5-dev lzop zip cpio fakeroot
 
-      - name: Clone Android GCC 4.9 toolchain
+      - name: Download Android GCC 4.9 Toolchain
         run: |
-          git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 Toolchain/aarch64-linux-android-4.9
-
-      - name: Prepare Android toolchain
-        run: |
-          TOOLCHAIN=$PWD/Toolchain/aarch64-linux-android-4.9/bin
-          mkdir -p "$TOOLCHAIN"
-          for b in \
-            addr2line ar as c++filt cpp dwp elfedit gcc g++ gcov gcov-dump \
-            gcov-tool gprof ld ld.bfd ld.gold lto-dump nm objcopy objdump \
-            ranlib readelf size strings strip; do
-            if command -v aarch64-linux-gnu-$b >/dev/null 2>&1; then
-              src=$(command -v aarch64-linux-gnu-$b)
-              ln -sf "$src" "$TOOLCHAIN/aarch64-linux-android-$b"
-            fi
-          done
+          mkdir -p Toolchain
+          cd Toolchain
+          wget https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/heads/master.tar.gz -O toolchain.tar.gz
+          tar -xzf toolchain.tar.gz
+          cd ..
 
       - name: Make build_kernel.sh executable
         run: chmod +x build_twrp/build_kernel.sh
