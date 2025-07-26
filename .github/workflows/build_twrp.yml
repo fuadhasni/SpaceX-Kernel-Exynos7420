@@ -9,6 +9,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .  # repo root
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -20,26 +24,18 @@ jobs:
             build-essential ccache bc bison flex libssl-dev \
             libncurses5-dev lzop zip cpio fakeroot
 
-      - name: Download and Extract Android GCC 4.9 Toolchain (official)
+      - name: Toolchain & Build (all in build_twrp dir)
         run: |
-          mkdir -p Toolchain/aarch64-linux-android-4.9
-          wget https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/a7bb6f39cd99b2fb26ecc2d3cb984d18cd259d24/aarch64-linux-android.tar.gz -O Toolchain/aarch64-linux-android.tar.gz
-          tar -xzf Toolchain/aarch64-linux-android.tar.gz -C Toolchain/aarch64-linux-android-4.9
-
-      - name: List extracted toolchain files (root)
-        run: ls -l Toolchain/aarch64-linux-android-4.9/bin
-
-      - name: Make build_kernel.sh executable
-        run: chmod +x build_twrp/build_kernel.sh
-
-      - name: List toolchain files from build_twrp directory
-        run: |
+          cd ..
           cd build_twrp
-          ls -l ../../Toolchain/aarch64-linux-android-4.9/bin
-
-      - name: Build kernel and recovery
-        run: |
-          cd build_twrp
+          # Download and extract toolchain (relative to repo root)
+          mkdir -p ../Toolchain/aarch64-linux-android-4.9
+          wget https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/a7bb6f39cd99b2fb26ecc2d3cb984d18cd259d24/aarch64-linux-android.tar.gz -O ../Toolchain/aarch64-linux-android.tar.gz
+          tar -xzf ../Toolchain/aarch64-linux-android.tar.gz -C ../Toolchain/aarch64-linux-android-4.9
+          # Confirm toolchain bin exists
+          ls -l ../Toolchain/aarch64-linux-android-4.9/bin
+          # Make scripts executable
+          chmod +x build_kernel.sh
           ln -sf compile_recovery.sh build_recovery.sh
           ./build_kernel.sh
 
@@ -48,5 +44,5 @@ jobs:
         with:
           name: twrp-build
           path: |
-            ManhIT_TWRP-3.0.0-1_SC-05G.*
-            recovery.img
+            build_twrp/ManhIT_TWRP-3.0.0-1_SC-05G.*
+            build_twrp/recovery.img
