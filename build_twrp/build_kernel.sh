@@ -56,15 +56,14 @@ else
 	echo
 	echo "Compilation failed on FIT kernel !"
 	echo
- 	make; echo ; exit;
-#	while true; do
- #   		read -p "Do you want to run a Make command to check the error?  (y/n) > " yn
-  #  		case $yn in
-   #     		[Yy]* ) make; echo ; exit;;
-    #    		[Nn]* ) echo; exit;;
-     #   	 	* ) echo "Please answer yes or no.";;
-    #		esac
-	#done
+	while true; do
+    		read -p "Do you want to run a Make command to check the error?  (y/n) > " yn
+    		case $yn in
+        		[Yy]* ) make; echo ; exit;;
+        		[Nn]* ) echo; exit;;
+        	 	* ) echo "Please answer yes or no.";;
+    		esac
+	done
 fi
 
 
