@@ -26,8 +26,16 @@ jobs:
           wget https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/a7bb6f39cd99b2fb26ecc2d3cb984d18cd259d24/aarch64-linux-android.tar.gz -O Toolchain/aarch64-linux-android.tar.gz
           tar -xzf Toolchain/aarch64-linux-android.tar.gz -C Toolchain/aarch64-linux-android-4.9
 
+      - name: List extracted toolchain files (root)
+        run: ls -l Toolchain/aarch64-linux-android-4.9/bin
+
       - name: Make build_kernel.sh executable
         run: chmod +x build_twrp/build_kernel.sh
+
+      - name: List toolchain files from build_twrp directory
+        run: |
+          cd build_twrp
+          ls -l ../../Toolchain/aarch64-linux-android-4.9/bin
 
       - name: Build kernel and recovery
         run: |
