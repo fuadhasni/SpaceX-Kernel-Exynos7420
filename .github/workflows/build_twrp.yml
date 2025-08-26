@@ -26,7 +26,6 @@ jobs:
 
       - name: Toolchain & Build (all in build_twrp dir)
         run: |
-          cd ..
           cd build_twrp
           # Download and extract toolchain (relative to repo root)
           mkdir -p ../Toolchain/aarch64-linux-android-4.9
